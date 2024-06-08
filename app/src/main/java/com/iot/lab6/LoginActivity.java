@@ -12,6 +12,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.firebase.ui.auth.AuthMethodPickerLayout;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract;
 import com.google.firebase.auth.FirebaseAuth;
@@ -37,21 +38,32 @@ public class LoginActivity extends AppCompatActivity {
 
         if (firebaseAuth.getCurrentUser() != null ){
             //está logueado
-            Log.d("msg-test", "se conectó: "+ firebaseUser.getUid());
+            Log.d("msg-test", "se conectó: "+ firebaseUser.getDisplayName());
             goToMainActivity();
         }
-        //config de auentificación
-        Intent intent = AuthUI.getInstance()
-                .createSignInIntentBuilder()
-                .setAvailableProviders(Arrays.asList(
-                        //autentificación con email y google
-                        new AuthUI.IdpConfig.EmailBuilder().build(),
-                        new AuthUI.IdpConfig.GoogleBuilder().build()
-                ))
-                .setIsSmartLockEnabled(false)
-                .build();
-        signInLauncher.launch(intent);
 
+
+        binding.loginBtn.setOnClickListener(v -> {
+            binding.loginBtn.setEnabled(false);
+
+            AuthMethodPickerLayout authMethodPickerLayout = new AuthMethodPickerLayout.Builder(R.layout.custom_login)
+                    .setEmailButtonId(R.id.btnEmail)
+                    .setGoogleButtonId(R.id.btnGoogle)
+                    .build();
+
+            //config de auentificación
+            Intent intent = AuthUI.getInstance()
+                    .createSignInIntentBuilder()
+                    .setIsSmartLockEnabled(false)
+                    .setAuthMethodPickerLayout(authMethodPickerLayout)
+                    .setAvailableProviders(Arrays.asList(
+                            //autentificación con email y google
+                            new AuthUI.IdpConfig.EmailBuilder().build(),
+                            new AuthUI.IdpConfig.GoogleBuilder().build()
+                    ))
+                    .build();
+            signInLauncher.launch(intent);
+        });
     }
 
     ActivityResultLauncher<Intent> signInLauncher = registerForActivityResult(
