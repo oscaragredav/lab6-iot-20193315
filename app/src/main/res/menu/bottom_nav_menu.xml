@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:title="Ingreso"
+        android:id="@+id/income"
+        android:icon="@drawable/ic_up"/>
+    <item android:title="Egreso"
+        android:id="@+id/outcome"
+        android:icon="@drawable/ic_down"/>
+    <item android:title="Resúmen"
+        android:id="@+id/graphics"
+        android:icon="@drawable/ic_finance"/>
+</menu>
