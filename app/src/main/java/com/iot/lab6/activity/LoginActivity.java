@@ -45,6 +45,7 @@ public class LoginActivity extends AppCompatActivity {
             AuthMethodPickerLayout authMethodPickerLayout = new AuthMethodPickerLayout.Builder(R.layout.custom_login)
                     .setEmailButtonId(R.id.btnEmail)
                     .setGoogleButtonId(R.id.btnGoogle)
+//                    .setFacebookButtonId(R.id.btnFacebook)
                     .build();
 
             //config de auentificación
@@ -56,6 +57,7 @@ public class LoginActivity extends AppCompatActivity {
                             //autentificación con email y google
                             new AuthUI.IdpConfig.EmailBuilder().build(),
                             new AuthUI.IdpConfig.GoogleBuilder().build()
+//                            new AuthUI.IdpConfig.FacebookBuilder().build()
                     ))
                     .build();
             signInLauncher.launch(intent);

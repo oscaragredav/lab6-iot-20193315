@@ -6,5 +6,7 @@
     </style>
 
     <style name="Theme.Lab6" parent="Base.Theme.Lab6" />
-    <style name="Theme.Lab6.NoActionBar" parent="Theme.Material3.DayNight.NoActionBar"/>
+    <style name="Theme.Lab6.NoActionBar" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/primary</item>
+    </style>
 </resources>
