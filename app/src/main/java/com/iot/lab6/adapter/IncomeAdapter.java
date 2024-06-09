@@ -1,14 +1,20 @@
 package com.iot.lab6.adapter;
 
+import android.app.Activity;
 import android.content.Context;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.iot.lab6.R;
 import com.iot.lab6.entity.Income;
 
@@ -39,6 +45,49 @@ public class IncomeAdapter extends RecyclerView.Adapter<IncomeAdapter.incomeView
         holder.descriptionItem.setText(income.getDescription());
         String amountString = String.valueOf(income.getAmount());
         holder.amountItem.setText(String.format("s/ %s", amountString));
+
+        //borrar
+        holder.btn2.setOnClickListener(v -> {
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+            db.collection("income")
+                    .document(income.getUserId())
+                    .delete()
+                    .addOnSuccessListener(aVoid -> {
+                        list.remove(position);
+                        notifyItemRemoved(position);
+                      notifyItemRangeChanged(position,list.size());
+                    })
+                    .addOnFailureListener(e -> e.printStackTrace());
+
+            Toast.makeText(holder.itemView.getContext(), "Ingreso eliminado", Toast.LENGTH_SHORT).show();
+        });
+
+        //editar
+        holder.btn2.setOnClickListener(v -> {
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+            db.collection("income")
+                    .document(income.getUserId())
+                    .get()
+                    .addOnCompleteListener(task -> {
+                        DocumentSnapshot documentSnapshot = task.getResult();
+                        if (documentSnapshot.exists()){
+                            Income income1 = documentSnapshot.toObject(Income.class);
+                            if (income1!=null){
+                                Bundle bundle = new Bundle();
+                                bundle.putString("userId", income.getUserId());
+                                bundle.putString("tittle", income.getTittle());
+                                bundle.putString("description", income.getDescription());
+                                bundle.putDouble("amount", income.getAmount());
+                                long seconds = income.getDate().getSeconds();
+                                int nanoseconds = income.getDate().getNanoseconds();
+                                bundle.putLong("seconds", seconds);
+                                bundle.putInt("nanoseconds", nanoseconds);
+
+
+                            }
+                        }
+                    });
+        });
     }
 
     @Override
@@ -49,11 +98,14 @@ public class IncomeAdapter extends RecyclerView.Adapter<IncomeAdapter.incomeView
 
     public class incomeViewHolder extends RecyclerView.ViewHolder{
         TextView tittleItem, descriptionItem, amountItem;
+        Button btn1, btn2;
         public incomeViewHolder(@NonNull View itemView) {
             super(itemView);
             tittleItem = itemView.findViewById(R.id.tittle);
             descriptionItem = itemView.findViewById(R.id.description);
             amountItem = itemView.findViewById(R.id.amount);
+            btn1 = itemView.findViewById(R.id.btn1);
+            btn2 = itemView.findViewById(R.id.btn2);
         }
     }
 }

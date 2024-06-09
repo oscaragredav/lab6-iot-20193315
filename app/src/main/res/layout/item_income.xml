@@ -35,23 +35,23 @@
         android:text="cantidad" />
 
     <Button
-        android:id="@+id/boton1"
+        android:id="@+id/btn1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@id/amount"
         android:layout_alignParentEnd="true"
         android:layout_marginStart="20dp"
-        android:text="1"
+        android:text="Editar"
         android:textColor="#FFFFFF" />
 
     <Button
-        android:id="@+id/boton2"
+        android:id="@+id/btn2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/boton1"
-        android:layout_alignEnd="@id/boton1"
+        android:layout_below="@id/btn1"
+        android:layout_alignEnd="@id/btn1"
         android:layout_marginTop="2dp"
-        android:text="2"
+        android:text="Borrar"
         android:textColor="#FFFFFF" />
 
 </RelativeLayout>

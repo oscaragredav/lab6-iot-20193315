@@ -37,7 +37,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/incomeRecyclerView"
             android:layout_width="0dp"
-            android:layout_height="500dp"
+            android:layout_height="550dp"
             android:layout_marginHorizontal="50dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
