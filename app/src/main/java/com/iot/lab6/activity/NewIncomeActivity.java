@@ -1,9 +1,12 @@
 package com.iot.lab6.activity;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.DatePicker;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,18 +20,24 @@ import com.iot.lab6.entity.Income;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.Calendar;
 import java.util.Date;
 
 public class NewIncomeActivity extends AppCompatActivity {
 
     ActivityNewIncomeBinding binding;
     FirebaseFirestore db;
+    String dateCalendar;
+    TextView tvCalendar;
+    Timestamp timestamp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityNewIncomeBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        tvCalendar = binding.tvCalendar;
 
         binding.back.setOnClickListener(view -> {
             Intent intent = new Intent(NewIncomeActivity.this, MainActivity.class);
@@ -46,7 +55,7 @@ public class NewIncomeActivity extends AppCompatActivity {
             String amountText = binding.amount.getEditText().getText().toString().trim();
 
 
-            if (tittle.isEmpty() || amountText.isEmpty()){
+            if (tittle.isEmpty() || amountText.isEmpty() ||  dateCalendar == null || dateCalendar.isEmpty()){
                 Toast.makeText(NewIncomeActivity.this, "Por favor, complete todos los campos.", Toast.LENGTH_SHORT).show();
             }else {
                 Double amount = Double.parseDouble(amountText);
@@ -60,7 +69,7 @@ public class NewIncomeActivity extends AppCompatActivity {
                 //hora actual
                 long currentTimeMillis = System.currentTimeMillis();
                 Date currentDate = new Date(currentTimeMillis);
-                Timestamp timestamp = new Timestamp(currentDate);
+                Timestamp timestampCurrent = new Timestamp(currentDate);
                 income.setDate(timestamp);
                 //id
                 FirebaseUser user = FirebaseAuth. getInstance().getCurrentUser() ;
@@ -68,7 +77,7 @@ public class NewIncomeActivity extends AppCompatActivity {
                 income.setUserId(userid);
 
                 //id con la fecha
-                long seconds = timestamp.getSeconds();
+                long seconds = timestampCurrent.getSeconds();
                 String timestampString = String.valueOf(seconds);
 
                 db = FirebaseFirestore.getInstance();
@@ -89,5 +98,30 @@ public class NewIncomeActivity extends AppCompatActivity {
 
 
         });
+    }
+
+    public void openCalendar (View view){
+        Calendar calendar = Calendar.getInstance();
+        int yearCalendar = calendar.get(Calendar.YEAR);
+        int monthCalendar = calendar.get(Calendar.MONTH);
+        int dayCalendar = calendar.get(Calendar.DAY_OF_MONTH);
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(NewIncomeActivity.this, new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                dateCalendar = dayOfMonth + "/" + (month+1) + "/" + year;
+                tvCalendar.setText(dateCalendar);
+                tvCalendar.setVisibility(View.VISIBLE);
+
+                // Convertir la fecha seleccionada a un objeto Date
+                Calendar selectedDate = Calendar.getInstance();
+                selectedDate.set(year, month, dayOfMonth);
+                Date date = selectedDate.getTime();
+
+                // Convertir el objeto Date a un Timestamp
+                timestamp = new Timestamp(date);
+            }
+        }, yearCalendar, monthCalendar, dayCalendar);
+        datePickerDialog.show();
     }
 }

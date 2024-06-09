@@ -24,6 +24,16 @@
         android:layout_alignStart="@id/tittle" />
 
     <TextView
+        android:id="@+id/date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/description"
+        android:layout_marginTop="10dp"
+        android:text="fecha"
+        android:textSize="12sp"
+        android:layout_alignStart="@id/description" />
+
+    <TextView
         android:id="@+id/amount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

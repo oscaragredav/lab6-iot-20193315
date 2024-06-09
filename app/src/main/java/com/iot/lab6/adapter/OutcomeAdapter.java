@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.iot.lab6.R;
@@ -23,6 +24,8 @@ import com.iot.lab6.entity.Outcome;
 import com.iot.lab6.fragments.EditIncomeFragment;
 import com.iot.lab6.fragments.EditOutcomeFragment;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class OutcomeAdapter extends RecyclerView.Adapter<OutcomeAdapter.outcomeViewHolder> {
@@ -50,6 +53,12 @@ public class OutcomeAdapter extends RecyclerView.Adapter<OutcomeAdapter.outcomeV
         holder.descriptionItem.setText(outcome.getDescription());
         String amountString = String.valueOf(outcome.getAmount());
         holder.amountItem.setText(String.format("s/ %s", amountString));
+        Timestamp date = outcome.getDate();
+        Date date1 = date.toDate();
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        String dateFormatString = dateFormat.format(date1);
+        holder.dateItem.setText(dateFormatString);
 
         //borrar
         holder.btn2.setOnClickListener(v -> {
@@ -107,13 +116,14 @@ public class OutcomeAdapter extends RecyclerView.Adapter<OutcomeAdapter.outcomeV
 
 
     public class outcomeViewHolder extends RecyclerView.ViewHolder{
-        TextView tittleItem, descriptionItem, amountItem;
+        TextView tittleItem, descriptionItem, amountItem, dateItem;
         Button btn1, btn2;
         public outcomeViewHolder(@NonNull View itemView) {
             super(itemView);
             tittleItem = itemView.findViewById(R.id.tittle);
             descriptionItem = itemView.findViewById(R.id.description);
             amountItem = itemView.findViewById(R.id.amount);
+            dateItem = itemView.findViewById(R.id.date);
             btn1 = itemView.findViewById(R.id.btn1);
             btn2 = itemView.findViewById(R.id.btn2);
         }

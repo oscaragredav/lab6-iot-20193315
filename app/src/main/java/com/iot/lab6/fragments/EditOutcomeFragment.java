@@ -17,6 +17,8 @@ import com.iot.lab6.activity.MainActivity;
 import com.iot.lab6.databinding.FragmentEditIncomeBinding;
 import com.iot.lab6.databinding.FragmentEditOutcomeBinding;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -41,7 +43,7 @@ public class EditOutcomeFragment extends Fragment {
             Timestamp date = new Timestamp(seconds, nanoseconds);
             Date date1 = date.toDate();
 
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
             String dateFormatString = dateFormat.format(date1);
 
             binding.tittle.getEditText().setText(tittle);
@@ -61,6 +63,8 @@ public class EditOutcomeFragment extends Fragment {
                     Toast.makeText(getContext(), "Por favor, complete todos los campos.", Toast.LENGTH_SHORT).show();
                 } else {
                     Double updatedAmountDouble = Double.parseDouble(updatedAmount);
+                    BigDecimal bd = new BigDecimal(updatedAmountDouble).setScale(2, RoundingMode.DOWN);
+                    Double updatedAmountDouble2 = bd.doubleValue();
 
                     // Actualización
                     Fragment outcomeFragment = new OutcomeFragment();
@@ -71,7 +75,7 @@ public class EditOutcomeFragment extends Fragment {
                             .update(
                                     "tittle", updatedTittle,
                                     "description", updatedDescription,
-                                    "amount", updatedAmountDouble
+                                    "amount", updatedAmountDouble2
                             )
                             .addOnSuccessListener(aVoid -> {
                                 Toast.makeText(getContext(), "Actualización exitosa", Toast.LENGTH_SHORT).show();
