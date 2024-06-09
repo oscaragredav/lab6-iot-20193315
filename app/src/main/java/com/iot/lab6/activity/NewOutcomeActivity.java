@@ -3,35 +3,41 @@ package com.iot.lab6.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
 
+import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.iot.lab6.R;
 import com.iot.lab6.databinding.ActivityNewIncomeBinding;
-import com.iot.lab6.entity.Income;
+import com.iot.lab6.databinding.ActivityNewOutcomeBinding;
+import com.iot.lab6.entity.Outcome;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Date;
 
-public class NewIncomeActivity extends AppCompatActivity {
+public class NewOutcomeActivity extends AppCompatActivity {
 
-    ActivityNewIncomeBinding binding;
+    ActivityNewOutcomeBinding binding;
     FirebaseFirestore db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityNewIncomeBinding.inflate(getLayoutInflater());
+        binding = ActivityNewOutcomeBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+
         binding.back.setOnClickListener(view -> {
-            Intent intent = new Intent(NewIncomeActivity.this, MainActivity.class);
+            Intent intent = new Intent(NewOutcomeActivity.this, MainActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
             finish();
@@ -47,47 +53,51 @@ public class NewIncomeActivity extends AppCompatActivity {
 
 
             if (tittle.isEmpty() || amountText.isEmpty()){
-                Toast.makeText(NewIncomeActivity.this, "Por favor, complete todos los campos.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(NewOutcomeActivity.this, "Por favor, complete todos los campos.", Toast.LENGTH_SHORT).show();
             }else {
                 Double amount = Double.parseDouble(amountText);
                 BigDecimal bd = new BigDecimal(amount).setScale(2, RoundingMode.DOWN);
                 amount = bd.doubleValue();
 
-                Income income = new Income();
-                income.setTittle(tittle);
-                income.setAmount(amount);
-                income.setDescription(description);
+                Outcome outcome = new Outcome();
+                outcome.setTittle(tittle);
+                outcome.setAmount(amount);
+                outcome.setDescription(description);
                 //hora actual
                 long currentTimeMillis = System.currentTimeMillis();
                 Date currentDate = new Date(currentTimeMillis);
                 Timestamp timestamp = new Timestamp(currentDate);
-                income.setDate(timestamp);
+                outcome.setDate(timestamp);
                 //id
                 FirebaseUser user = FirebaseAuth. getInstance().getCurrentUser() ;
                 String userid = user.getUid();
-                income.setUserId(userid);
+                outcome.setUserId(userid);
 
                 //id con la fecha
                 long seconds = timestamp.getSeconds();
                 String timestampString = String.valueOf(seconds);
 
                 db = FirebaseFirestore.getInstance();
-                db.collection("income")
+                db.collection("outcome")
                         .document(timestampString)
-                        .set(income)
+                        .set(outcome)
                         .addOnSuccessListener(unused -> {
                             Log. d("msg-test" ,"Data guardada exitosamente ");
                         })
                         .addOnFailureListener(e -> e.printStackTrace());
 
-                Intent intent = new Intent(NewIncomeActivity.this, MainActivity.class);
+                Intent intent = new Intent(NewOutcomeActivity.this, MainActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                Toast.makeText(this, "Ingreso guardado", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Egreso guardado", Toast.LENGTH_LONG).show();
                 startActivity(intent);
                 finish();
             }
 
 
         });
+
+
     }
+
+
 }

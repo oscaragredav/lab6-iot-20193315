@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_marginTop="15dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/tittle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Título del producto"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tittle"
+        android:layout_marginTop="10dp"
+        android:text="Subtítulo del producto"
+        android:textSize="12sp"
+        android:layout_alignStart="@id/tittle" />
+
+    <TextView
+        android:id="@+id/amount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/tittle"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="5dp"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:text="cantidad" />
+
+    <Button
+        android:id="@+id/btn1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/amount"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="20dp"
+        android:text="Editar"
+        android:textColor="#FFFFFF" />
+
+    <Button
+        android:id="@+id/btn2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btn1"
+        android:layout_alignEnd="@id/btn1"
+        android:layout_marginTop="2dp"
+        android:text="Borrar"
+        android:textColor="#FFFFFF" />
+
+</RelativeLayout>
