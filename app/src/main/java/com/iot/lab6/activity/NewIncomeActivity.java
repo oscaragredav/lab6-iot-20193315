@@ -15,6 +15,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.iot.lab6.databinding.ActivityNewIncomeBinding;
 import com.iot.lab6.entity.Income;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Date;
 
 public class NewIncomeActivity extends AppCompatActivity {
@@ -43,6 +45,8 @@ public class NewIncomeActivity extends AppCompatActivity {
             }
             String amountText = binding.amount.getEditText().getText().toString().trim();
             Double amount = Double.parseDouble(amountText);
+            BigDecimal bd = new BigDecimal(amount).setScale(2, RoundingMode.DOWN);
+            amount = bd.doubleValue();
 
 
             Income income = new Income();

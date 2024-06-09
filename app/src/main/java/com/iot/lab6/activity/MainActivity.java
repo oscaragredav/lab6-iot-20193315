@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         FirebaseUser user = FirebaseAuth. getInstance().getCurrentUser() ;
+        String userId = user.getUid();
         String userName = user.getDisplayName();
 
         //fragmentos
