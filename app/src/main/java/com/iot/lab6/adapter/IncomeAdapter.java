@@ -3,6 +3,7 @@ package com.iot.lab6.adapter;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,12 +12,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.iot.lab6.R;
+import com.iot.lab6.activity.MainActivity;
 import com.iot.lab6.entity.Income;
+import com.iot.lab6.fragments.EditIncomeFragment;
 
 import java.util.List;
 
@@ -63,7 +67,8 @@ public class IncomeAdapter extends RecyclerView.Adapter<IncomeAdapter.incomeView
         });
 
         //editar
-        holder.btn2.setOnClickListener(v -> {
+        holder.btn1.setOnClickListener(v -> {
+            Fragment editIncomeFragment = new EditIncomeFragment();
             FirebaseFirestore db = FirebaseFirestore.getInstance();
             db.collection("income")
                     .document(income.getUserId())
@@ -78,12 +83,16 @@ public class IncomeAdapter extends RecyclerView.Adapter<IncomeAdapter.incomeView
                                 bundle.putString("tittle", income.getTittle());
                                 bundle.putString("description", income.getDescription());
                                 bundle.putDouble("amount", income.getAmount());
+                                Log.d("msg-test" , "cantidad0: " + income.getAmount());
                                 long seconds = income.getDate().getSeconds();
                                 int nanoseconds = income.getDate().getNanoseconds();
                                 bundle.putLong("seconds", seconds);
                                 bundle.putInt("nanoseconds", nanoseconds);
 
-
+                                editIncomeFragment.setArguments(bundle);
+                                if (context instanceof MainActivity){
+                                    ((MainActivity) context).replaceFragment(editIncomeFragment);
+                                }
                             }
                         }
                     });
